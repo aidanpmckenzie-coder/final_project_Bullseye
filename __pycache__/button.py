@@ -1,5 +1,8 @@
+# The Main Menu consists of two buttons, Start & Information
+
 import turtle
 
+# Button class
 class Button:
     def __init__(self, x, y, text, pen):
         self.x = x
@@ -7,6 +10,7 @@ class Button:
         self.text = text
         self.pen = pen 
 
+# Button design
     def draw(self):
         self.pen.goto(self.x - 60, self.y - 20)
         self.pen.pendown()
@@ -19,7 +23,7 @@ class Button:
 
         self.pen.goto(self.x, self.y - 10)
         self.pen.write(self.text, align="center", font=("Arial", 14))
-
+        
+# Mouse clicks the button
     def clicked(self, x, y):
-        return (self.x - 60 < x < self.x + 60 and
-                self.y - 20 < y < self.y + 20)
+        return (self.x - 60 < x < self.x + 60 and self.y - 20 < y < self.y + 20)

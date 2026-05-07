@@ -21,6 +21,14 @@ pen.hideturtle()
 pen.speed(0)
 pen.penup()
 
+# Game Stats (While Playing game)
+player = 1 # player 1's turn
+arrows = 5 # each player gets 5 arrows
+wind_x = 0 # x coordinate to aim for
+wind_y = 0 # y coordinate to aim for
+
+
+
 # Main Menu
 start_button = Button(0, 20, "START", pen)
 info_button = Button(0, -40, "INFO", pen)
@@ -30,13 +38,6 @@ def draw_menu():
     pen.write("ARCHERY", align="center", font=("Arial", 24))
     start_button.draw()
     info_button.draw()
-
-# Clicking Main Menu
-def click(x, y):
-    if start_button.clicked(x, y):
-        print("Start clicked")
-    elif info_button.clicked(x, y):
-        print("Info clicked")
 
 
 # Archery Board Rings (Colors & radius)
@@ -52,6 +53,9 @@ THIRD_RING_RADIUS = 60
 FOURTH_RING_RADIUS = 40
 BULLSEYE_RING_RADIUS = 20
 
+# Arrow on Screen (shot taken)
+ARROW_SHOT_RADIUS = 8
+ARROW_SHOT = "green"
 
 # Archery Board (Game Screen)
 def draw_archery_board():
@@ -65,6 +69,32 @@ def draw_archery_board():
         pen.circle(sizes[i])
         pen.end_fill()
     pen.color("black")
+
+# Wind (The wind recommends the coordinate that the player should aim at, changes after each shot)
+def wind():
+    global wind_x, wind_y
+    wind_x = random.randint(-200,200)
+    wind_y = random.randint(-200,200)
+
+    # Preventing easy shots 
+    while -10 < wind_x < 10 and -10 < wind_y < 10:
+        wind_x = random.randint(-200,200)
+        wind_y = random.randint(-200,200)
+
+
+# Game Text
+def draw_text():
+    # Player (1 for now)
+    pen.goto(-220, 220)
+    pen.write(f"Player: {player}",font=("Arial", 12))
+
+    # Arrows (Maximum 5)
+    pen.goto(140, 220)
+    pen.write(f"Arrows: {arrows}",font=("Arial", 12))
+
+    # Wind
+    pen.goto(-80, -230)
+    pen.write(f"Wind: ({wind_x}, {wind_y})",font=("Arial", 12))
 
 
 # Information (Information Screen)
@@ -86,6 +116,17 @@ def draw_info():
     pen.write("Click anywhere on the screen to begin!", align="center", font=("Arial", 14))
 
 
+# Play the Game (Shooting)
+def shoot(x,y):
+    # Shooting using the wind (corrects shot)
+    x -= wind_x
+    y -= wind_y
+
+    # Draw shot on the screen
+    pen.goto(x, y)
+    pen.dot(ARROW_SHOT_RADIUS, ARROW_SHOT)
+
+
 # Clicking function
 # This function determines which screen will be displayed to the user after clicking a certain button or action
 # For the game, it determines what will appear on the screen after the player interacts with the game
@@ -95,7 +136,11 @@ def click(x, y):
     if display_screen == "menu":
         if start_button.clicked(x, y):
             display_screen = "game"
+            pen.clear()
+            wind()
             draw_archery_board()
+            draw_text()
+
         elif info_button.clicked(x, y):
             display_screen = "info"
             draw_info()
@@ -105,6 +150,9 @@ def click(x, y):
         display_screen = "game"
         draw_archery_board()
 
+    # Begin the Game
+    elif display_screen == "game":
+        shoot(x,y)
 
 # Running
 screen.onclick(click)
