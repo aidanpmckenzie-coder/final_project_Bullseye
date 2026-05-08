@@ -10,7 +10,7 @@ import math
 from button import Button
 
 # Screen
-SCREEN_BACKGROUND_COLOR = "white"
+SCREEN_BACKGROUND_COLOR = "linen"
 display_screen = "menu"
 screen = turtle.Screen()
 screen.setup(500, 500)
@@ -24,7 +24,7 @@ pen.penup()
 
 # Game Stats (While Playing game)
 player = 1 # player 1's turn
-arrows = 5 # each player gets 5 arrows
+arrows = 10 # each player gets 5 arrows
 wind_x = 0 # x coordinate to aim for
 wind_y = 0 # y coordinate to aim for
 player_one_score = 0
@@ -167,10 +167,31 @@ def draw_info():
     pen.goto(0,-70)
     pen.write("Click anywhere on the screen to begin!", align="center", font=("Arial", 14))
 
+# Game Results
+def draw_game_results():
+    pen.clear()
+    # Finding the Winner
+    if player_one_score > player_two_score:
+        result = "Player 1 Wins!"
+    elif player_two_score > player_one_score:
+        result = "Player 2 Wins!"
+    else: 
+        result = "Tie Game!"
+    
+    # Results Displayed
+    pen.goto(0,80)
+    pen.write(result,align="center",font=("Arial", 24))
+    pen.goto(0,30)
+    pen.write(f"P1: {player_one_score}   P2: {player_two_score}",align="center",font=("Arial", 16))
+
+    # Return to Main Menu
+    pen.goto(0, -50)
+    pen.write("Click anywhere to return to menu!",align="center",font=("Arial", 12))
+
 
 # Play the Game (Shooting)
 def shoot(x,y):
-    global player, arrows, player_one_score, player_two_score
+    global player, arrows, player_one_score, player_two_score, display_screen
 
     # Shooting using the wind (corrects shot)
     x -= wind_x
@@ -181,7 +202,7 @@ def shoot(x,y):
         shot_color = "green"
 
     else:
-        shot_color = "hot pink"
+        shot_color = "magenta"
 
     # Draw shot on the screen
     pen.goto(x, y)
@@ -209,7 +230,8 @@ def shoot(x,y):
 
     # End the game
     if arrows == 0:
-        print("Game Over!")
+        display_screen = "game_over"
+        draw_game_results()
 
 
 # Clicking function
@@ -240,6 +262,16 @@ def click(x, y):
     # Begin the Game
     elif display_screen == "game":
         shoot(x,y)
+
+    # Game Results and Reset
+    elif display_screen == "game_over":
+        player = 1
+        arrows = 10
+        player_one_score = 0
+        player_two_score = 0
+        display_screen = "menu"
+        draw_menu()
+
 
 # Running
 screen.onclick(click)
