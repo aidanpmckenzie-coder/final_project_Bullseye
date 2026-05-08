@@ -1,35 +1,45 @@
-# final_project_Bullseye
-Bullseye Final Project for Computer Programming
+# final_project_Archery
+Archery Final Project for Computer Programming
 
-# Bullseye
+# Archery
 
-# Description
-    My final project is titled “Archery” or “Bullseye.” As the name suggests, the goal of this game is to hit the bullseye of a target board with your mouse button. However, it’s not as easy as just hovering over the bullseye point as wind is going to play a factor in this game. Using some simple math, you’ll need to adjust your aiming as you take wind as a factor of where your arrow would end up on the board. Getting a bullseye equates to a win. You have five arrows (five attempts). If you may the bullseye you keep the arrow
-    (Depending on how this project goes, I may make it a two-person game so you are against the other player) 
+# Description / How to Play (from game)
+   Welcome to Archery! The rules of the game are simple, rack up points by hitting a ring on the archery board.
+   Hitting the board will get you points, and points increase the closer you are to the bullseye.
+   However, it is not as simple as just clicking on the bullseye, as wind will play a factor in this challenge.
+   The game consists of 2 players, the player with the most points after each player runs out of arrows, wins!
+
+   Bullseye: 10 Points
+   Red: 8 Points
+   Blue: 6 points
+   Black: 4 points
+   White: 2 points
+   Miss: 0 Points
+
+   Hint: The radius of the archery board is 100
+   Hint: The center of the archery board is the origin (0,0)
 
 
 
 # Tech being used 
-    I will be using pygame for this, but if the drawing proves to be too complicated this may be a simple Brython or turtle game as they will make the drawings appear better likely
-
+    This tech returns to the days of Computer Science Principles as Python Turtle makes up the visuals on the screen.
+    Imports:
+        Turtle
+        Random
+        Math
 
 
 # Features 
-    Start Screen
-	Begin Game 
-	Info Section 
+    Main Menu Screen- Start and Info Button
 
-    Info Section
-	    Basic Description, How to Play
-	    Begin Game Button
+    Info Screen - How to Play, Points, Hints, and Start Button
 
-    The Game
-        Player #1 Arrows Remaining (start with 5)
-        Player #2 Arrows Remaining (start with 5)
-        Target in middle
-        Wind Speed & direction (random each turn)
-        If possible (change mouse arrow to crosshairs)
+	Game - Archery Board, Players, Arrows Left, Score, Wind
+	 
 
-    What I need: 
-        Import math (possibly for calculating wind to middle of target)
-        Import random (random each round)
+    There are two files used for this game:
+        Main.py
+        Button.py - button class for Main Menu buttons
+
+	
+    
