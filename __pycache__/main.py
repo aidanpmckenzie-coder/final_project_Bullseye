@@ -16,11 +16,33 @@ screen = turtle.Screen()
 screen.setup(500, 500)
 screen.bgcolor(SCREEN_BACKGROUND_COLOR)
 
-# Turtle Pen
-pen = turtle.Turtle()
-pen.hideturtle()
-pen.speed(0)
-pen.penup()
+# Turtle Pens
+# Some pens only used once, others constantly update screen
+
+# Menu, Info, Results pen
+menu_pen = turtle.Turtle()
+menu_pen.hideturtle()
+menu_pen.speed(0)
+menu_pen.penup()
+
+# Archery Board pen
+archery_board_pen = turtle.Turtle()
+archery_board_pen.hideturtle()
+archery_board_pen.speed(0)
+archery_board_pen.penup()
+
+# Game Text pen (changing each turn)
+text_pen = turtle.Turtle()
+text_pen.hideturtle()
+text_pen.speed(0)
+text_pen.penup()
+
+# Arrow Shots pen
+shot_pen = turtle.Turtle()
+shot_pen.hideturtle()
+shot_pen.speed(0)
+shot_pen.penup()
+
 
 # Game Stats (While Playing game)
 player = 1 # player 1's turn
@@ -32,12 +54,12 @@ player_two_score = 0
 
 
 # Main Menu
-start_button = Button(0, 20, "START", pen)
-info_button = Button(0, -40, "INFO", pen)
+start_button = Button(0, 20, "START", menu_pen)
+info_button = Button(0, -40, "INFO", menu_pen)
 def draw_menu():
-    pen.clear()
-    pen.goto(0, 100)
-    pen.write("ARCHERY", align="center", font=("Arial", 24))
+    menu_pen.clear()
+    menu_pen.goto(0, 100)
+    menu_pen.write("ARCHERY", align="center", font=("Arial", 24))
     start_button.draw()
     info_button.draw()
 
@@ -62,48 +84,49 @@ ARROW_SHOT_RADIUS = 8
 
 # Archery Board (Game Screen)
 def draw_archery_board():
-    pen.clear()
+    archery_board_pen.clear()
     colors = [OUTLINE_RING_COLOR,FIRST_RING_COLOR, SECOND_RING_COLOR, THIRD_RING_COLOR, FOURTH_RING_COLOR, BULLSEYE_RING_COLOR]
     sizes = [OUTLINE_RING_RADIUS, FIRST_RING_RADIUS, SECOND_RING_RADIUS, THIRD_RING_RADIUS, FOURTH_RING_RADIUS, BULLSEYE_RING_RADIUS]
     for i in range(6):
-        pen.goto(0, -sizes[i])
-        pen.color(colors[i])
-        pen.begin_fill()
-        pen.circle(sizes[i])
-        pen.end_fill()
-    pen.color("black")
+        archery_board_pen.goto(0, -sizes[i])
+        archery_board_pen.color(colors[i])
+        archery_board_pen.begin_fill()
+        archery_board_pen.circle(sizes[i])
+        archery_board_pen.end_fill()
+    archery_board_pen.color("black")
 
 # Wind (The wind recommends the coordinate that the player should aim at, changes after each shot)
 def wind():
     global wind_x, wind_y
-    wind_x = random.randint(-200,200)
-    wind_y = random.randint(-200,200)
+    wind_x = random.randint(-240,240)
+    wind_y = random.randint(-240,240)
 
     # Preventing easy shots 
-    while -10 < wind_x < 10 and -10 < wind_y < 10:
-        wind_x = random.randint(-200,200)
-        wind_y = random.randint(-200,200)
+    while -20 < wind_x < 20 or -20 < wind_y < 20:
+        wind_x = random.randint(-240,240)
+        wind_y = random.randint(-240,240)
 
 # Game Text
 def draw_text():
+    text_pen.clear()
     # Player (1 for now)
-    pen.goto(-220, 220)
-    pen.write(f"Player: {player}",font=("Arial", 12))
+    text_pen.goto(-220, 220)
+    text_pen.write(f"Player: {player}",font=("Arial", 12))
 
     # Arrows (Maximum 5)
-    pen.goto(-220, 190)
-    pen.write(f"Arrows: {arrows}",font=("Arial", 12))
+    text_pen.goto(-220, 190)
+    text_pen.write(f"Arrows: {arrows}",font=("Arial", 12))
 
     # Wind
-    pen.goto(-80, -230)
-    pen.write(f"Wind: ({wind_x}, {wind_y})",font=("Arial", 12))
+    text_pen.goto(-80, -230)
+    text_pen.write(f"Wind: ({wind_x}, {wind_y})",font=("Arial", 12))
 
     # Scores
-    pen.goto(140, 220)
-    pen.write(f"P1: {player_one_score}", font=("Arial", 12))
+    text_pen.goto(140, 220)
+    text_pen.write(f"P1: {player_one_score}", font=("Arial", 12))
 
-    pen.goto(140, 190)
-    pen.write(f"P2: {player_two_score}", font=("Arial", 12))
+    text_pen.goto(140, 190)
+    text_pen.write(f"P2: {player_two_score}", font=("Arial", 12))
 
 # Score
 def score(x,y):
@@ -135,41 +158,49 @@ def score(x,y):
 
 # Information (Information Screen)
 def draw_info():
-    pen.clear()
+    menu_pen.clear()
     # How to Play 
-    pen.goto(0, 190)
-    pen.write("How to Play", align="center",font=("Arial", 20))
-    pen.goto(0, 160)
-    pen.write("Welcome to Archery! The rules of the game are simple, rack up points by hitting a ring on the archery board.", align="center", font=("Arial", 14))
-    pen.goto(0,140)
-    pen.write("Hitting the board will get you points, and points increase the closer you are to the bullseye", align="center", font=("Arial", 14))
-    pen.goto(0,120)
-    pen.write("However, it is not as simple as just clicking on the bullseye, as wind will play a factor in this challenge.", align="center", font=("Arial", 14))
-    pen.goto(0,100)
-    pen.write("The game consists of 2 players, the player with the most points after each player runs out of arrows, wins!", align="center", font=("Arial", 14))
+    menu_pen.goto(0, 190)
+    menu_pen.write("How to Play", align="center",font=("Arial", 20))
+    menu_pen.goto(0, 160)
+    menu_pen.write("Welcome to Archery! The rules of the game are simple, rack up points by hitting a ring on the archery board.", align="center", font=("Arial", 14))
+    menu_pen.goto(0,140)
+    menu_pen.write("Hitting the board will get you points, and points increase the closer you are to the bullseye", align="center", font=("Arial", 14))
+    menu_pen.goto(0,120)
+    menu_pen.write("However, it is not as simple as just clicking on the bullseye, as wind will play a factor in this challenge.", align="center", font=("Arial", 14))
+    menu_pen.goto(0,100)
+    menu_pen.write("The game consists of 2 players, the player with the most points after each player runs out of arrows, wins!", align="center", font=("Arial", 14))
     
     # Score Distribution
-    pen.goto(0, 80)
-    pen.write("Bullseye: 10 Points", align="center",font=("Arial", 12))
-    pen.goto(0, 60)
-    pen.write("Red: 8 Points", align="center",font=("Arial", 12))
-    pen.goto(0, 40)
-    pen.write("Blue: 6 points", align="center",font=("Arial", 12))
-    pen.goto(0, 20)
-    pen.write("Black: 4 points", align="center",font=("Arial", 12))
-    pen.goto(0, 0)
-    pen.write("White: 2 points", align="center",font=("Arial", 12))
-    pen.goto(0, -20)
-    pen.write("Miss: 0 Points", align="center",font=("Arial", 12))
+    menu_pen.goto(0, 80)
+    menu_pen.write("Bullseye: 10 Points", align="center",font=("Arial", 12))
+    menu_pen.goto(0, 60)
+    menu_pen.write("Red: 8 Points", align="center",font=("Arial", 12))
+    menu_pen.goto(0, 40)
+    menu_pen.write("Blue: 6 points", align="center",font=("Arial", 12))
+    menu_pen.goto(0, 20)
+    menu_pen.write("Black: 4 points", align="center",font=("Arial", 12))
+    menu_pen.goto(0, 0)
+    menu_pen.write("White: 2 points", align="center",font=("Arial", 12))
+    menu_pen.goto(0, -20)
+    menu_pen.write("Miss: 0 Points", align="center",font=("Arial", 12))
 
+    # Hints
+    menu_pen.goto(0,-70)
+    menu_pen.write("Hint: The radius of the archery board is 100", align="center", font=("Arial", 10))
+    menu_pen.goto(0,-90)
+    menu_pen.write("Hint: The center of the archery board is the origin (0,0)", align="center", font=("Arial", 10))
 
     # Start the Game
-    pen.goto(0,-70)
-    pen.write("Click anywhere on the screen to begin!", align="center", font=("Arial", 14))
+    menu_pen.goto(0,-160)
+    menu_pen.write("Click anywhere on the screen to begin!", align="center", font=("Arial", 13))
 
 # Game Results
 def draw_game_results():
-    pen.clear()
+    menu_pen.clear()
+    archery_board_pen.clear()
+    shot_pen.clear()
+    text_pen.clear()
     # Finding the Winner
     if player_one_score > player_two_score:
         result = "Player 1 Wins!"
@@ -179,14 +210,14 @@ def draw_game_results():
         result = "Tie Game!"
     
     # Results Displayed
-    pen.goto(0,80)
-    pen.write(result,align="center",font=("Arial", 24))
-    pen.goto(0,30)
-    pen.write(f"P1: {player_one_score}   P2: {player_two_score}",align="center",font=("Arial", 16))
+    menu_pen.goto(0,80)
+    menu_pen.write(result,align="center",font=("Arial", 24))
+    menu_pen.goto(0,30)
+    menu_pen.write(f"P1: {player_one_score}   P2: {player_two_score}",align="center",font=("Arial", 16))
 
     # Return to Main Menu
-    pen.goto(0, -50)
-    pen.write("Click anywhere to return to menu!",align="center",font=("Arial", 12))
+    menu_pen.goto(0, -50)
+    menu_pen.write("Click anywhere to return to menu!",align="center",font=("Arial", 12))
 
 
 # Play the Game (Shooting)
@@ -205,8 +236,8 @@ def shoot(x,y):
         shot_color = "magenta"
 
     # Draw shot on the screen
-    pen.goto(x, y)
-    pen.dot(ARROW_SHOT_RADIUS, shot_color)
+    shot_pen.goto(x, y)
+    shot_pen.dot(ARROW_SHOT_RADIUS, shot_color)
 
     # Updating Points
     points = score(x,y)
@@ -238,12 +269,14 @@ def shoot(x,y):
 # This function determines which screen will be displayed to the user after clicking a certain button or action
 # For the game, it determines what will appear on the screen after the player interacts with the game
 def click(x, y):
-    global display_screen
+    global display_screen, player, arrows, player_one_score, player_two_score
     # Main Menu
     if display_screen == "menu":
         if start_button.clicked(x, y):
             display_screen = "game"
-            pen.clear()
+            menu_pen.clear()
+            shot_pen.clear()
+            text_pen.clear()
             wind()
             draw_archery_board()
             draw_text()
@@ -255,6 +288,7 @@ def click(x, y):
     # Information screen
     elif display_screen == "info":
         display_screen = "game"
+        menu_pen.clear()
         draw_archery_board()
         wind()
         draw_text()
@@ -265,6 +299,10 @@ def click(x, y):
 
     # Game Results and Reset
     elif display_screen == "game_over":
+        menu_pen.clear()
+        archery_board_pen.clear()
+        shot_pen.clear()
+        text_pen.clear()
         player = 1
         arrows = 10
         player_one_score = 0
