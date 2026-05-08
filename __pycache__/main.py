@@ -11,9 +11,11 @@ from button import Button
 
 # Screen
 SCREEN_BACKGROUND_COLOR = "linen"
+SCREEN_HEIGHT = 500
+SCREEN_WIDTH = 500
 display_screen = "menu"
 screen = turtle.Screen()
-screen.setup(500, 500)
+screen.setup(SCREEN_WIDTH, SCREEN_HEIGHT)
 screen.bgcolor(SCREEN_BACKGROUND_COLOR)
 
 # Turtle Pens
@@ -132,23 +134,23 @@ def draw_text():
 def score(x,y):
     distance = math.dist((x, y), (0, 0))  # shot distance from bullseye center
     # Hits Bullseye
-    if distance <= 20:
+    if distance <= BULLSEYE_RING_RADIUS:
         return 10
     
     # Hits Fourth Ring 
-    elif distance <= 40:
+    elif distance <= FOURTH_RING_RADIUS:
         return 8
     
     # Hits Third Ring 
-    elif distance <= 60:
+    elif distance <= THIRD_RING_RADIUS:
         return 6
     
     # Hits Second Ring 
-    elif distance <= 80:
+    elif distance <= SECOND_RING_RADIUS:
         return 4
     
     # Hits First Ring 
-    elif distance <= 100:
+    elif distance <= FIRST_RING_RADIUS:
         return 2
     
     # Does not Hit Archery Board
