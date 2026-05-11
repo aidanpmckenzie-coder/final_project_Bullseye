@@ -192,9 +192,11 @@ def draw_info():
     menu_pen.write("Hint: The radius of the archery board is 100", align="center", font=("Arial", 10))
     menu_pen.goto(0,-90)
     menu_pen.write("Hint: The center of the archery board is the origin (0,0)", align="center", font=("Arial", 10))
+    menu_pen.goto(0,-110)
+    menu_pen.write("Hint: It is recommended that you direct your aim at the wind coordinates", align="center", font=("Arial", 10))
 
     # Start the Game
-    menu_pen.goto(0,-160)
+    menu_pen.goto(0,-185)
     menu_pen.write("Click anywhere on the screen to begin!", align="center", font=("Arial", 13))
 
 # Game Results
